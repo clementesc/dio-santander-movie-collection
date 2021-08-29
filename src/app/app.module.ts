@@ -11,12 +11,14 @@ import { AppRoutingModule } from './app.routing.module';
 import { MaterialModule } from './shared/material/material.module';
 import { TopoComponent } from './shared/components/topo/topo.component';
 import { RodapeComponent } from './shared/components/rodape/rodape.component';
+import { AlertaComponent } from './shared/components/alerta/alerta.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TopoComponent,
     RodapeComponent,
+    AlertaComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +28,8 @@ import { RodapeComponent } from './shared/components/rodape/rodape.component';
     MaterialModule,
     AppRoutingModule
   ],
+  //componentes que são inicializados com a aplicação, sem precisar instanciar
+  entryComponents: [AlertaComponent],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt' }],
   bootstrap: [AppComponent]
 })

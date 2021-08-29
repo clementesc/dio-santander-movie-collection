@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { FilmesService } from 'src/app/core/filmes.service';
+import { AlertaComponent } from 'src/app/shared/components/alerta/alerta.component';
 import { ValidarCamposService } from 'src/app/shared/components/campos/validar-campos.service';
+import { Alerta } from 'src/app/shared/models/alerta';
 import { Filme } from 'src/app/shared/models/filme';
 
 @Component({
@@ -15,12 +18,9 @@ export class CadastroFilmesComponent implements OnInit {
   generos: Array<string>;
 
   constructor(public validacao : ValidarCamposService,
+              public dialog: MatDialog,
               private fb: FormBuilder,
               private filmeService: FilmesService) { }
-
-  get f(){
-    return this.cadastro.controls;
-  }
 
   ngOnInit(): void {
 
@@ -55,8 +55,19 @@ export class CadastroFilmesComponent implements OnInit {
 
   private salvar(filme: Filme): void {
     this.filmeService.salvar(filme).subscribe(
-      () => {
-        alert('Sucesso');
+      () =>  {
+        const config = {
+          data: {
+            titulo: 'Sucesso!',
+            descricao: 'Filme cadastrado com sucesso.',
+            btnSucesso: 'Ir para a listagem',
+            btnCancelar: 'Cadastrar um novo filme',
+            corBtnCancelar: 'primary',
+            possuirBtnFechar: true
+          } as Alerta
+        };
+        const dialogRef = this.dialog.open(AlertaComponent, config);
+        
       },
       () => {
         alert('erro ao salvar')
