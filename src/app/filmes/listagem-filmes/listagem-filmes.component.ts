@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FilmesService } from 'src/app/core/filmes.service';
+import { Filme } from 'src/app/shared/models/filme';
 
 @Component({
   selector: 'dio-listagem-filmes',
@@ -7,13 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListagemFilmesComponent implements OnInit {
 
-  constructor() { }
+  readonly qtdPagina: number = 4;
+  pagina: number = 0;
 
-  ngOnInit() {
+  filmes: Filme[] = [];
 
+  constructor(private filmesService: FilmesService) { }
+
+  ngOnInit(): void { 
+    this.listaFilmes();
   }
 
-  open() {
+  onScroll(): void {
+    this.listaFilmes();
+  }
+
+  private listaFilmes(): void{
+    this.pagina++;
+    this.filmesService.listar(this.pagina, this.qtdPagina).subscribe({
+      next: filmes => this.filmes.push(...filmes),
+      error: err => console.log('Error', err)
+    });
   }
 
 }
